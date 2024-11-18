@@ -17,10 +17,8 @@ export const LiveStreamUI = () => {
     console.log("Toggling live status. Current state:", isCallLive);
     if (isCallLive) {
       call?.stopLive();
-      console.log("Stopping live...");
     } else {
       call?.goLive();
-      console.log("Starting live...");
     }
   };
 

@@ -4,7 +4,7 @@ import Footer from "../components/layout/Footer";
 
 const PublicLayout = () => {
   return (
-    <div>
+    <div className="max-h-screen min-h-screen overflow-y-auto overflow-x-hidden">
       <Header />
       <main className="container mx-auto p-4">
         <Outlet />
