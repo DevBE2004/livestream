@@ -36,6 +36,7 @@ const Login = () => {
           progress: undefined,
           theme: "light",
         });
+        window.location.reload();
       } else {
         toast(`🦄 đăng nhập thất bại vui lòng thử lại!`, {
           position: "bottom-right",

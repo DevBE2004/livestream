@@ -21,7 +21,7 @@ const App = () => {
       dispatch(setLoginState({ me: response.data.me, isLogin: true }));
     };
     if (token) fetchDataMe();
-  }, [token, dispatch]);
+  }, [token]);
 
   return (
     <>
