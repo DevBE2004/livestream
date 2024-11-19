@@ -3,11 +3,13 @@ import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 import InputForm from "../form/InputForm";
 import { clsx } from "clsx";
-import { apiSignIn, apiSignUp } from "../../apis/auth";
+import { apiForgotPassword, apiSignIn, apiSignUp } from "../../apis/auth";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setModal } from "../../redux/appSlice";
-import { setToken } from "../../redux/meSlice";
+import { setEmailForgotPassword, setToken } from "../../redux/meSlice";
+import VerifyForgotPassword from "./VerifyForgotPassword";
+import Loading from "../common/Loading";
 
 const Login = () => {
   const [toggleLoginStatus, setToggleLoginStatus] = useState<string>("Login");
@@ -53,7 +55,7 @@ const Login = () => {
       const response = await apiSignUp(data);
       if (response.data.success) {
         setToggleLoginStatus("Login");
-        reset();
+
         toast(`🦄 ${response.data.mes}!`, {
           position: "bottom-right",
           autoClose: 5000,
@@ -64,6 +66,7 @@ const Login = () => {
           progress: undefined,
           theme: "light",
         });
+        reset();
       } else {
         toast(`🦄 đăng ký thất bại vui lòng thử lại!`, {
           position: "bottom-right",
@@ -77,9 +80,39 @@ const Login = () => {
         });
       }
     } else if (toggleLoginStatus === "Forgotpassword") {
-      // const response = await apiSignUp(data);
-      // console.log(response);
-      // reset()
+      dispatch(setModal({ isShowModal: true, contentModal: <Loading /> }));
+      const response = await apiForgotPassword(data);
+      if (response.data.success) {
+        toast(`🦄 ${response.data.message}!`, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        dispatch(setEmailForgotPassword({ emailForgotPassword: data }));
+        dispatch(
+          setModal({
+            isShowModal: true,
+            contentModal: <VerifyForgotPassword />,
+          })
+        );
+      }
+      reset();
+    } else {
+      toast(`🦄 đã xảy ra một lỗi. Vui lòng thử lại!`, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
   return (
@@ -158,7 +191,7 @@ const Login = () => {
             type="submit"
             className="mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200"
           >
-            {toggleLoginStatus === "Login" ? "Login" : "Register"}
+            {toggleLoginStatus}
           </button>
         </form>
         <span

@@ -22,7 +22,6 @@ const App = () => {
     };
     if (token) fetchDataMe();
   }, [token]);
-
   return (
     <>
       {isShowModal && <Modal children={contentModal} />}

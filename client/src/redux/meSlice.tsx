@@ -6,6 +6,7 @@ export const meSlice = createSlice({
     isLogin: false,
     token: null,
     me: null,
+    emailForgotPassword: null,
   },
   reducers: {
     setToken: (state, action) => {
@@ -20,9 +21,13 @@ export const meSlice = createSlice({
       state.token = null;
       state.me = null;
     },
+    setEmailForgotPassword: (state, action) => {
+      state.emailForgotPassword = action.payload.emailForgotPassword;
+    },
   },
 });
 
-export const { setToken, setLoginState, logout } = meSlice.actions;
+export const { setToken, setLoginState, logout, setEmailForgotPassword } =
+  meSlice.actions;
 
 export default meSlice.reducer;

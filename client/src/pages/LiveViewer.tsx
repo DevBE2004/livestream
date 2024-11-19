@@ -14,7 +14,7 @@ const userId = import.meta.env.VITE_USERID;
 
 const user: User = {
   id: userId,
-  name: "anhtu",
+  name: userId,
 };
 
 const client = new StreamVideoClient({ apiKey, user, token });

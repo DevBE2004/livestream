@@ -14,7 +14,7 @@ const userId = import.meta.env.VITE_USERID;
 
 const user: User = {
   id: userId,
-  name: "anhtu",
+  name: userId,
 };
 
 const client = new StreamVideoClient({ apiKey, user, token });
@@ -29,7 +29,7 @@ export default function LiveStream() {
   return (
     <StreamVideo client={client}>
       <StreamCall call={call}>
-        <LiveStreamUI />
+        <LiveStreamUI/>
       </StreamCall>
     </StreamVideo>
   );

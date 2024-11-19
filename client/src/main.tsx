@@ -8,7 +8,7 @@ import { store, persistor } from "./redux/redux.tsx";
 import { PersistGate } from "redux-persist/integration/react";
 
 createRoot(document.getElementById("root")!).render(
-  <StreamTheme>
+  <StreamTheme style={{ fontFamily: "sans-serif" }}>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
