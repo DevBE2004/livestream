@@ -21,15 +21,17 @@ const ResetPassword = () => {
   const dispatch = useDispatch();
 
   const onSubmit = async (data: any) => {
-    const response = await apiResetPassword({
+    await apiResetPassword({
       email: emailForgotPassword.email,
       password: data.password,
-    });
-
-    if (response.data.success) {
-      toast.success(response.data.mes);
-      dispatch(setModal({ isShowModal: false, contentModal: null }));
-    } else toast.error(response.data.mes);
+    })
+      .then((response) => {
+        toast.success(response.data.mes);
+        dispatch(setModal({ isShowModal: false, contentModal: null }));
+      })
+      .catch((error) => {
+        toast.error(error.mes);
+      });
   };
 
   useEffect(() => {

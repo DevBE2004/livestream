@@ -23,96 +23,100 @@ const Login = () => {
 
   const onSubmit = async (data: any) => {
     if (toggleLoginStatus === "Login") {
-      const response = await apiSignIn(data);
-      if (response.data.success) {
-        dispatch(setToken({ token: response.data.accesstoken }));
-        reset();
-        dispatch(setModal({ isShowModal: false, contentModal: null }));
-        toast(`🦄 ${response.data.mes}!`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+      await apiSignIn(data)
+        .then((response) => {
+          dispatch(setToken({ token: response.data.accesstoken }));
+          reset();
+          dispatch(setModal({ isShowModal: false, contentModal: null }));
+          toast(`🦄 ${response.data.mes}!`, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          window.location.reload();
+        })
+        .catch((errors) => {
+          toast(`🦄${errors.mes}!`, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
-        window.location.reload();
-      } else {
-        toast(`🦄 đăng nhập thất bại vui lòng thử lại!`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
     } else if (toggleLoginStatus === "Register") {
-      const response = await apiSignUp(data);
-      if (response.data.success) {
-        setToggleLoginStatus("Login");
+      await apiSignUp(data)
+        .then((response) => {
+          setToggleLoginStatus("Login");
 
-        toast(`🦄 ${response.data.mes}!`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+          toast(`🦄 ${response.data.mes}!`, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          reset();
+        })
+        .catch((errors) => {
+          toast(`🦄${errors.mes}!`, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
-        reset();
-      } else {
-        toast(`🦄 đăng ký thất bại vui lòng thử lại!`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
     } else if (toggleLoginStatus === "Forgotpassword") {
       dispatch(setModal({ isShowModal: true, contentModal: <Loading /> }));
-      const response = await apiForgotPassword(data);
-      if (response.data.success) {
-        toast(`🦄 ${response.data.message}!`, {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+      await apiForgotPassword(data)
+        .then((response) => {
+          toast(`🦄 ${response.data.message}!`, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          dispatch(setEmailForgotPassword({ emailForgotPassword: data }));
+          dispatch(
+            setModal({
+              isShowModal: true,
+              contentModal: <VerifyForgotPassword />,
+            })
+          );
+          reset();
+        })
+        .catch((errors) => {
+          dispatch(setModal({ isShowModal: false, contentModal: null }));
+          toast(`🦄${errors.mes}!`, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
         });
-        dispatch(setEmailForgotPassword({ emailForgotPassword: data }));
-        dispatch(
-          setModal({
-            isShowModal: true,
-            contentModal: <VerifyForgotPassword />,
-          })
-        );
-      }
-      reset();
-    } else {
-      toast(`🦄 đã xảy ra một lỗi. Vui lòng thử lại!`, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
     }
   };
   return (

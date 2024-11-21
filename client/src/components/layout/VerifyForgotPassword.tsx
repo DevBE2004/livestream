@@ -17,18 +17,19 @@ const VerifyForgotPassword = () => {
   const dispatch = useDispatch();
 
   const onsubmit = async (data: any) => {
-    const response = await apiVerifyForgotPassword({
+    await apiVerifyForgotPassword({
       email: emailForgotPassword.email,
       code: data.code,
-    });
-    if (response.data.success) {
-      dispatch(
-        setModal({ isShowModal: true, contentModal: <ResetPassword /> })
-      );
-      reset();
-    } else {
-      toast.error(response.data.mes);
-    }
+    })
+      .then(() => {
+        dispatch(
+          setModal({ isShowModal: true, contentModal: <ResetPassword /> })
+        );
+        reset();
+      })
+      .catch((errors) => {
+        toast.error(errors.mes);
+      });
   };
 
   return (

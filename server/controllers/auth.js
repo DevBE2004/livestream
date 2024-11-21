@@ -26,7 +26,7 @@ module.exports = {
     if (!checkPassword)
       throw new Error("tài khoản hoặc mật khẩu sai. vui lòng thử lại.");
     const accesstoken = JWT.sign(
-      { uid: user._id, role: user.role },
+      { id: user._id, role: user.role },
       process.env.SECRET_KEY,
       { expiresIn: "3d" }
     );

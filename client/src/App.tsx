@@ -3,7 +3,7 @@ import PublicLayout from "./pages/PublicLayout";
 import Home from "./pages/Home";
 import LiveStreamViewer from "./pages/LiveViewer";
 import Modal from "./components/common/Modal";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -17,8 +17,13 @@ const App = () => {
 
   useEffect(() => {
     const fetchDataMe = async () => {
-      const response = await apiGetMe();
-      dispatch(setLoginState({ me: response.data.me, isLogin: true }));
+      await apiGetMe()
+        .then((response) => {
+          dispatch(setLoginState({ me: response.data.me, isLogin: true }));
+        })
+        .catch((errors) => {
+          toast.error(errors.mes);
+        });
     };
     if (token) fetchDataMe();
   }, [token]);
